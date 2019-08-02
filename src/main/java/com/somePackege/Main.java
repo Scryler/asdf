@@ -1,15 +1,34 @@
 package com.somePackege;
 
-import com.somePackege.builder.Line;
-import com.somePackege.builder.LineBuilder;
-import com.somePackege.originalPackege.SomeClass;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Main{
+    public static void main(String[] args) throws Exception {
 
-    void init(){
+        Document doc = Jsoup.connect("https://yandex.ru/").get();
 
-        SomeClass someClass = new SomeClass.Builder(1,2).build();
 
-        Line line = new LineBuilder().withId(1L).withName("test").build();
+        String title = doc.title();
+
+        System.out.println("Title: " + title);
+
+        Elements div = doc.getElementsByClass("news__item-content");
+
+        List<String> str = div.stream().map(element -> {
+            return element.ownText();
+        }).collect(Collectors.toList());
+
+
+        div.stream().forEach(element -> {
+            System.out.println(element.ownText());
+        });
+
+
     }
 }
